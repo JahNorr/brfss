@@ -127,7 +127,7 @@ DataMgr <-
       #' Defaults to regex `".*"`.
       #' @return A data frame containing variable definitions, section tags,
       #' and descriptive labels.
-      col_info = function(section = ".*", label = ".*") {
+      col_info = function(label = ".*", col_name = ".*", section = ".*") {
 
         df <- self$prepped_data
 
@@ -166,8 +166,9 @@ DataMgr <-
           bind_rows()
 
         df_atts %>%
-          filter(grepl(section, section_name)) %>%
-          filter(grepl(.env$label, label))
+          filter(grepl(section, section_name, ignore.case = T)) %>%
+          filter(grepl(.env$label, label, ignore.case = T)) %>%
+          filter(grepl(.env$col_name, variable, ignore.case = T))
 
       },
 
@@ -297,9 +298,10 @@ DataMgr <-
 
         }
 
-        year_save <- dsm$get(year)
 
         dsm <- private$..dataset_mgr
+
+        year_save <- dsm$get(year)
 
         # dm <- DataMgr$new(dataset_mgr = dsm)
         #
@@ -309,7 +311,11 @@ DataMgr <-
 
           dsm$set(year = year)
 
-          df <- dm$prepped_data %>%
+          col <- self$col_names(col)
+          cols <- c(col, subvars)
+
+          browser()
+          df <- self$prepped_data %>%
             mutate(year = year) %>%
             select(year, all_of(cols), `_LLCPWT`, `_STSTR`)
 
@@ -374,7 +380,7 @@ DataMgr <-
 
           dsm$set(version = version)
 
-          df <- dm$prepped_data
+          df <- self$prepped_data
 
           if(!is.null(df)) {
 

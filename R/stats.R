@@ -317,16 +317,17 @@ stats_w_subs <- function(des, conf = .95, pct = TRUE, digits = 2) {
 
   mysvymean<-survey::svyby(frmla1,frmla2,des,svymean)
 
-
   my_rse <- cv(mysvymean)%>% t()
 
   df_rse <- my_rse %>%
     as.data.frame() %>%
     mutate(response = row.names(.) %>% gsub(paste0(".*",coi),"",.)) %>%
+    mutate(response = gsub("`","",response)) %>%
     mutate(subvar = subvar) %>%
     tidyr::pivot_longer(cols = !matches("subvar|response"),
                         values_to = "rse", names_to = "subset" ) %>%
-    mutate(rse = round(rse * 100, digits))
+    mutate(rse = round(rse * 100, digits)) |>
+    mutate(rse = if_else(is.na(rse), 0, rse))
 
 
 
