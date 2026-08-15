@@ -181,7 +181,7 @@ StatsMgr <-
                               value = ".*", wide = FALSE, ... ){
 
         cois <-  cois %||% private$..cois
-        years <- (years %||% private$..years) |> unname()
+        years <- (years %||% private$..years)
 
         suppress <- suppress %||% private$..suppress
 
@@ -253,7 +253,7 @@ StatsMgr <-
                   class = c("brfss_stats", "data.frame"),
                   response = response,
                   label = attr(cois %>% tail(1), "label"),
-                  years = years,
+                  years = years |> unname(),
                   cois = cois,
                   years_txt = years_txt,
                   geog = multi_attrs$geog ,
