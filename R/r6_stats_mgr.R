@@ -243,7 +243,10 @@ StatsMgr <-
 
         }
 
-        years_txt  <-  if(length(years) > 0) paste0(min(years),"-", max(years)) else as.character(years)
+        yr1 <- min(years)
+        yr2 <- max(years)
+
+        years_txt  <-  if(yr1 != yr2) paste0(yr1 ,"-", yr2) else as.character(yr1)
 
         structure(df_stats,
                   class = c("brfss_stats", "data.frame"),
