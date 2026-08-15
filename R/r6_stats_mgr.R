@@ -181,7 +181,8 @@ StatsMgr <-
                               value = ".*", wide = FALSE, ... ){
 
         cois <-  cois %||% private$..cois
-        years <- years %||% private$..years
+        years <- (years %||% private$..years) |> unname()
+
         suppress <- suppress %||% private$..suppress
 
         if(is.null(years)) years <- private$..data_mgr$dataset_mgr$get(year)
