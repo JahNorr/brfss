@@ -193,6 +193,7 @@ survey_stats <- function(df_data = NULL,
 
   }
 
+
   df <- bind_rows(df_stats_main, df_subs )
 
   df_lo <- tryCatch(get.layout(),
@@ -407,7 +408,7 @@ stats_w_subs <- function(des, conf = .95, pct = TRUE, digits = 2) {
     mutate(percent_unwtd = round(num/den * mult, digits)) %>%
     left_join(mysvytotal, by = join_by(subset, response)) %>%
     as.data.frame() %>%
-    relocate(c(num,den), .after = response) %>%
+    relocate(c(den, num), .after = response) %>%
     left_join(df_rse, by = join_by(response, subset, subvar))
 
   df_stats
@@ -484,7 +485,7 @@ stats_no_subs <- function(des, conf = .95, pct = TRUE, digits = 2) {
     left_join(mycv, by = join_by(response)) %>%
     mutate(subvar = "") %>%
     mutate(subset = "All Respondents")  %>%
-    relocate(c(subvar,subset))
+    relocate(c(subvar,subset, response, den))
 
   rownames(df_stats)<- NULL
 

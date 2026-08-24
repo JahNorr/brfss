@@ -6,6 +6,7 @@ CodebookMgr <-
 
     private = list(
 
+      ..df_layout_tmp = NULL,
       dataset_mgr_pvt = NULL,
       file_mgr_pvt = NULL,
 
@@ -650,7 +651,7 @@ CodebookMgr <-
 
       },
 
-      get_values = function() {
+      get_values = function(col_name = "") {
 
         file <-  private$file_mgr_pvt$apply("codebook_values_path")
 
@@ -675,7 +676,7 @@ CodebookMgr <-
           if(!file.exists(file)) return(NULL)
         }
 
-        readRDS(file = file)
+        readRDS(file = file) |> filter(grepl({{col_name}}, col_name))
 
       },
 

@@ -117,6 +117,10 @@ StatsMgr <-
 
         }
 
+        if(is.null(years)) {
+
+          years <- private$..data_mgr$dataset_mgr$get("year")
+        }
 
         private$..cois <- cois
         private$..years <- years
@@ -180,6 +184,8 @@ StatsMgr <-
       survey_stats = function(years = NULL, cois = NULL, suppress = NULL, expand = FALSE,
                               value = ".*", wide = FALSE, ... ){
 
+
+
         cois <-  cois %||% private$..cois
         years <- (years %||% private$..years)
 
@@ -227,7 +233,7 @@ StatsMgr <-
 
         if(is.null(df_stats) || nrow(df_stats) == 0) return(NULL)
 
-        df_stats <- df_stats%>%
+        df_stats <- df_stats %>%
           relocate(year)
 
         if(suppress) {
@@ -326,7 +332,7 @@ StatsMgr <-
         if(reduce) {
 
           df <- df %>%
-            select(-any_of(c("num", "den", "percent_unwtd"))) %>%
+            select(-any_of(c("den", "num", "percent_unwtd"))) %>%
             rename_with(.fn = ~gsub("_wtd","", .x))
         }
 
